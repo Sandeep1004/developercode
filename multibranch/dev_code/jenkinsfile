@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+    stages {
+       stage('continuous download-loans') {
+           steps {
+               script {
+                   try 
+                   {
+                       git branch: 'main', url: 'https://github.com/Praveen7608/Maven22.git'
+                   }
+                   catch (Exception e1)
+                   {
+                       mail bcc: '', body: 'got download fail', cc: '', from: '', replyTo: '', subject: 'jenkins failed to perform download activity', to: 'githubadmin@gmail.com'
+                       exit(1)
+                   }
+               }
+              
+           }
+        }
+        stage('continuous build-loans') {
+           steps {
+               script {
+                   try 
+                   {
+                       sh 'mvn package'
+                   }
+                   catch (Exception e2 )
+                   {
+                       mail bcc: '', body: 'got bulid fail', cc: '', from: '', replyTo: '', subject: 'jenkins failed to perform build activity', to: 'developer@gmail.com'
+                       exit(1)
+                   }
+               }
+              
+            }
+        }    
+ }
+ }
